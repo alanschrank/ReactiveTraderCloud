@@ -1,5 +1,6 @@
 import Rx from 'rx';
-import { Router, observeEvent } from 'esp-js/src';
+import { Router, observeEvent } from 'esp-js';
+import { viewBinding } from 'esp-js-react';
 import { PricingService, ExecutionService } from '../../../services';
 import { logger, Environment } from '../../../system';
 import { ModelBase, RegionManagerHelper } from '../../common';
@@ -12,7 +13,7 @@ import { getPopoutService } from '../../common/popout/';
 
 const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 4000;
 const MAX_NOTIONAL_VALUE = 1000000000;
-const PRICE_STALE_AFTER_X_IN_MS = 4000;
+const PRICE_STALE_AFTER_X_IN_MS = 6000;
 
 import {
   GetSpotStreamRequest,
@@ -26,7 +27,7 @@ import {
 import { SpotTileView } from '../views';
 
 
-@view(SpotTileView)
+@viewBinding(SpotTileView)
 export default class SpotTileModel extends ModelBase {
   // non view state
   _pricingService:PricingService;

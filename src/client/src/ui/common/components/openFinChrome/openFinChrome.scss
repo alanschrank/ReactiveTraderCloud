@@ -18,12 +18,11 @@ $header-height: 30px;
   width: 100%;
   height: $header-height;
   display: flex;
-  -webkit-app-region: drag;
 }
 
 .openfin-chrome__header--with-bar {
-  background: url('../../images/adaptive-logo-statusbar.png') no-repeat, #DEE3E8;
-  background-position: 6px 6px;
+  background: url('../../images/adaptive-logo-light.svg') no-repeat, #DEE3E8;
+  background-position: 6px 1px;
   align-content: center;
   vertical-align: middle;
 
@@ -52,7 +51,7 @@ $header-height: 30px;
   }
   .openfin-chrome__header-controls {
     display: none;
-    right: 55px;
+    right: 25px;
   }
   .openfin-chrome__header-title-label {
     display: none;
@@ -64,6 +63,7 @@ $header-height: 30px;
   margin: 5px auto;
   text-align: center;
   font-weight: bold;
+  -webkit-app-region: drag;
 }
 
 @media (max-width: 400px) {
@@ -73,9 +73,9 @@ $header-height: 30px;
 }
 
 .openfin-chrome__header-controls-container {
-  flex: 1;
+  flex: 0;
   position: relative;
-  min-width: 120px;
+  min-width: 90px;
 }
 
 .openfin-chrome__header-controls {

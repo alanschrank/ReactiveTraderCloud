@@ -10,7 +10,7 @@ domainName="adaptivecluster.com"
 vMajor="0"
 vMinor="0"
 
-# Reactive Trader 
+# Reactive Trader
 brokerContainer_major="0"
 brokerContainer_minor="0"
 brokerContainer="reactivetrader/broker:$brokerContainer_major.$brokerContainer_minor"
@@ -58,8 +58,8 @@ nginxContainer_minor="0"
 nginxContainer="weareadaptive/nginx:$nginxContainer_major.$nginxContainer_minor"
 
 # dotnet
-dotnetversion="dotnet-dev-1.0.0-preview2-003121"
-dotnetContainer_major="0"
+dotnetversion="dotnet-dev-1.0.0-preview2.1-003177"
+dotnetContainer_major="1"
 dotnetContainer_minor="1"
 dotnetContainer="weareadaptive/dotnet:$dotnetContainer_major.$dotnetContainer_minor"
 
@@ -73,7 +73,7 @@ testtoolsContainer_latest="$testtoolsContainer_base:latest"
 
 # gcloud
 gcloudContainer_major="1"
-gcloudContainer_minor="0"
+gcloudContainer_minor="1"
 gcloudContainer="weareadaptive/gcloud:$gcloudContainer_major.$gcloudContainer_minor"
 
 # nsgate
@@ -116,3 +116,7 @@ kube_zone="europe-west1-c"
 # kube_zone="us-central1-b"
 # kube_zone="us-central1-c"
 # kube_zone="us-central1-f"
+
+# DOCKER-COMPOSE
+# ==============
+docker_compose_file="docker-compose.yml"
