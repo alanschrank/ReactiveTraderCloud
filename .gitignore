@@ -1,5 +1,6 @@
-src/client/node_modules
+node_modules/
 src/client/coverage
+src/node-server/protos
 .idea/
 .vs/
 npm-debug.log
@@ -19,4 +20,8 @@ key.priv
 key.pub
 bin/
 obj/
-docker-compose.yml
+deploy/**/docker-compose.yml
+*.pyc
+*.sln
+lerna-debug.log
+.DS_Store

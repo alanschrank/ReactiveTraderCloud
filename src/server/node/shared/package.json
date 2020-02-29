@@ -1,0 +1,23 @@
+{
+  "name": "shared",
+  "description": "Reactive Trader - Shared lib",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
+  },
+  "main": "src/index.js",
+  "types": "src/index.js",
+  "dependencies": {
+    "autobahn": "^18.10.2",
+    "rxjs": "^6.5.3",
+    "winston": "^3.2.1"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "lint": "eslint --ext .ts ./src"
+  },
+  "devDependencies": {
+    "@types/autobahn": "^0.9.42",
+    "@types/node": "^12.7.12"
+  }
+}
