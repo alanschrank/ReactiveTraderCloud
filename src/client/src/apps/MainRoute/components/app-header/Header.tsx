@@ -1,47 +1,56 @@
 import React, { useCallback } from 'react'
-import { styled, ThemeName, useTheme } from 'rt-theme'
+import ReactGA from 'react-ga'
+import { styled } from 'rt-theme'
+import LoginControls from './LoginControls'
 import Logo from './Logo'
-
+import ThemeSwitcher from './theme-switcher'
 const Header: React.FC = ({ children }) => {
-  const onLogoClick = useCallback(() => window.open('https://weareadaptive.com/'), [])
+  const onLogoClick = useCallback(() => {
+    ReactGA.event({
+      category: 'RT - Outbound',
+      action: 'click',
+      label: 'https://weareadaptive.com',
+      transport: 'beacon',
+    })
+    window.open('https://weareadaptive.com/')
+  }, [])
 
   return (
     <Root>
-      <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+      <LogoWrapper>
+        <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+      </LogoWrapper>
       <Fill />
-      <ThemeControl />
-      {children == null ? null : (
-        <React.Fragment>
-          <Division />
-          {children}
-        </React.Fragment>
-      )}
+      <HeaderNav>
+        <LoginControls />
+        <ThemeSwitcher />
+        {children == null ? null : <React.Fragment>{children}</React.Fragment>}
+      </HeaderNav>
     </Root>
   )
 }
 
-const ThemeControl = () => {
-  const { themeName, toggleTheme } = useTheme()
-  return (
-    <IconButton onClick={toggleTheme} data-qa="header__toggle-theme-button">
-      <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
-    </IconButton>
-  )
-}
+const LogoWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 const Root = styled.div`
-  width: 100%;
+  width: calc(100% - 2rem);
   max-width: 100%;
 
   min-height: 3.5rem;
   max-height: 3.5rem;
 
-  padding: 0 1rem;
+  margin: 0.25rem 1rem;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  border-bottom: 1px solid ${({ theme }) => theme.core.dividerColor};
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
@@ -50,56 +59,27 @@ const Root = styled.div`
   box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
 
+const HeaderNav = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
 const Fill = styled.div`
   flex: 1;
   height: calc(3.5rem - 5px);
   margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: normal;
+  opacity: 0.58;
+  font-size: 0.625rem;
   /**
     TODO 8/22 extract this extension of header, and the fill outside header layout
   */
   -webkit-app-region: drag;
   cursor: -webkit-grab;
-`
-
-const IconButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-  font-size: 1rem;
-  line-height: 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  cursor: pointer;
-
-  transition: background-color ${({ theme }) => theme.motion.duration}ms
-    ${({ theme }) => theme.motion.easing};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};
-    color: ${({ theme }) => theme.button.secondary.textColor};
-  }
-`
-
-const Division = styled.div`
-  height: 100%;
-  padding: 0 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 0.125rem;
-    height: 100%;
-    margin-right: -0.125rem;
-    background-color: ${props => props.theme.core.darkBackground};
-  }
 `
 
 export default Header

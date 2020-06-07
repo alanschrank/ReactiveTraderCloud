@@ -7,7 +7,7 @@ import { ServiceConnectionStatus } from 'rt-types'
 
 const buttonHeight = '2rem'
 
-export const Button = styled.div`
+export const Button = styled.div<{ margin?: string }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 15rem;
   user-select: none;
@@ -19,6 +19,7 @@ export const Button = styled.div`
   height: 1.6rem;
   font-size: 0.65rem;
   font-weight: 350;
+  margin: ${({ margin }) => (margin ? margin : 'unset')};
 `
 
 const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className }) => {
@@ -37,10 +38,10 @@ export const StatusCircle = styled(StatusCircleCore)<{ status?: ServiceConnectio
   circle {
     fill: ${({ theme, status }) =>
       status === ServiceConnectionStatus.CONNECTED
-        ? theme.template.green.normal
+        ? theme.accents.positive.base
         : status === ServiceConnectionStatus.CONNECTING
-        ? theme.template.yellow.normal
-        : theme.template.red.normal};
+        ? theme.accents.aware.base
+        : theme.accents.negative.base};
   }
 `
 

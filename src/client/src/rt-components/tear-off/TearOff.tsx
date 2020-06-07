@@ -1,9 +1,9 @@
-import React, {useCallback, useRef} from 'react'
-import ExternalWindow, {ExternalWindowProps} from './ExternalWindow'
-import {styled} from 'rt-theme'
-import {useDispatch} from 'react-redux'
-import {usePlatform} from 'rt-platforms'
-import {LayoutActions} from 'rt-actions'
+import React, { useCallback, useRef } from 'react'
+import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
+import { styled } from 'rt-theme'
+import { useDispatch } from 'react-redux'
+import { usePlatform } from 'rt-platforms'
+import { LayoutActions } from 'rt-actions'
 
 type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
 
@@ -57,8 +57,8 @@ export interface TearOffProps {
   dragTearOff: boolean
 }
 
-const TearOff: React.FC<TearOffProps> = ({render, externalWindowProps, tornOff, dragTearOff}) => {
-  const {allowTearOff} = usePlatform()
+const TearOff: React.FC<TearOffProps> = ({ render, externalWindowProps, tornOff, dragTearOff }) => {
+  const { allowTearOff } = usePlatform()
   const targetMouseXRef = useRef<number>()
   const targetMouseYRef = useRef<number>()
 
@@ -66,21 +66,30 @@ const TearOff: React.FC<TearOffProps> = ({render, externalWindowProps, tornOff, 
   const windowName = externalWindowProps.config && externalWindowProps.config.name
   const popOut = useCallback(
     (mouseScreenX?: number, mouseScreenY?: number) => {
-      const popOutX = typeof targetMouseXRef.current !== 'undefined' && typeof mouseScreenX !== 'undefined' ?
-        mouseScreenX - targetMouseXRef.current : mouseScreenX
-      const popOutY = typeof targetMouseYRef.current !== 'undefined' && typeof mouseScreenY !== 'undefined' ?
-        mouseScreenY - targetMouseYRef.current : mouseScreenY
+      const popOutX =
+        typeof targetMouseXRef.current !== 'undefined' && typeof mouseScreenX !== 'undefined'
+          ? mouseScreenX - targetMouseXRef.current
+          : mouseScreenX
+      const popOutY =
+        typeof targetMouseYRef.current !== 'undefined' && typeof mouseScreenY !== 'undefined'
+          ? mouseScreenY - targetMouseYRef.current
+          : mouseScreenY
 
       dispatch(
-        LayoutActions.updateContainerVisibilityAction({name: windowName, display: false, x:popOutX, y:popOutY}),
+        LayoutActions.updateContainerVisibilityAction({
+          name: windowName,
+          display: false,
+          x: popOutX,
+          y: popOutY
+        })
       )
     },
-    [windowName, dispatch],
+    [windowName, dispatch]
   )
   const popIn = useCallback(
     () =>
-      dispatch(LayoutActions.updateContainerVisibilityAction({name: windowName, display: true})),
-    [windowName, dispatch],
+      dispatch(LayoutActions.updateContainerVisibilityAction({ name: windowName, display: true })),
+    [windowName, dispatch]
   )
 
   const onMouseDownCapture = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -89,7 +98,7 @@ const TearOff: React.FC<TearOffProps> = ({render, externalWindowProps, tornOff, 
     // calculating mouse position relative to the torn off widget
     const clientRect = eventTarget.getBoundingClientRect()
     targetMouseXRef.current = event.clientX - clientRect.left
-    targetMouseYRef.current =  event.clientY - clientRect.top
+    targetMouseYRef.current = event.clientY - clientRect.top
   }
 
   if (tornOff) {

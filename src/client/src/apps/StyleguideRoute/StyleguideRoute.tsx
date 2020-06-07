@@ -3,21 +3,21 @@ import Helmet from 'react-helmet'
 import { styled, ThemeProvider } from 'rt-theme'
 import FloatingTools from './components/FloatingsTools'
 import OnePageNavBar from './components/OnePageNavBar'
-import { Block, SectionBlock } from './styled'
+import { Block } from './styled'
 
 import Atoms from './sections/Atoms'
-import ColorSpectrum from './sections/ColorSpectrum'
 import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 import Iconography from './sections/Iconography'
+import Molecules from './sections/Molecules'
 
 const sections: Array<{ path: string; Section: React.ComponentType; title: string }> = [
-  { path: 'color-spectrum', Section: ColorSpectrum, title: 'Colour' },
-  { path: 'core-branding', Section: CoreBranding, title: 'Color branding' },
+  { path: 'core-branding', Section: CoreBranding, title: 'Colour' },
   { path: 'font-families', Section: FontFamilies, title: 'Typography' },
   { path: 'icons-family', Section: Iconography, title: 'Iconography' },
-  { path: 'atoms-molecules', Section: Atoms, title: 'Atoms' },
+  { path: 'atoms-components', Section: Atoms, title: 'Atoms' },
+  { path: 'molecules-components', Section: Molecules, title: 'Molecules' },
 ]
 
 const StyleguideRoute: React.FC = () => {
@@ -45,7 +45,6 @@ const StyleguideRoute: React.FC = () => {
               </ScrollableContainer>
             ))}
           </React.Fragment>
-          <SectionBlock mh={5} colorScheme="inverted" />
         </Root>
       </ThemeProvider>
     </React.Fragment>

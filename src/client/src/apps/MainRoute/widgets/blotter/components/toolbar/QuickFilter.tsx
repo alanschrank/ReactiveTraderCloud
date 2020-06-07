@@ -28,11 +28,11 @@ const QuickFilterInput = styled('input')`
 
   &:hover {
     opacity: 1;
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.template.blue.light};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.primary.lighter};
   }
 
   &:focus {
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.template.blue.normal};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.primary.base};
     color: ${({ theme }) => theme.core.textColor};
     opacity: 1;
   }
@@ -60,7 +60,7 @@ const QuickFilterClearIcon = styled('i')`
 const QuickFilter: React.FC<QuickFilterProps> = ({
   isFilterApplied,
   removeQuickFilter,
-  quickFilterChangeHandler,
+  quickFilterChangeHandler
 }) => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>('')
@@ -71,7 +71,7 @@ const QuickFilter: React.FC<QuickFilterProps> = ({
       setQuickFilterText(target.value)
       quickFilterChangeHandler(event)
     },
-    [quickFilterChangeHandler],
+    [quickFilterChangeHandler]
   )
 
   const clearQuickFilter = useCallback(() => {

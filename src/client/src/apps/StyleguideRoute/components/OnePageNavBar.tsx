@@ -21,7 +21,7 @@ export interface OnePageNavBar {
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
-const DEFAULT_OFFSET = 120
+const DEFAULT_OFFSET = 130
 const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {
@@ -109,7 +109,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
                     >
                       {section.title}
                     </OnePageNavLink>
-                  ),
+                  )
               )}
             </FlexWrapper>
           </div>
@@ -129,7 +129,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
 const TextHeader = styled.p`
   ${({ theme }) =>
     css({
-      color: theme.secondary.base,
+      color: theme.secondary.base
     })};
   margin: 0;
 `
@@ -141,7 +141,7 @@ const LogoContainer = styled.div`
 const OnePageNavLink = styled(Link)`
   ${({ theme }) =>
     css({
-      color: theme.secondary.base,
+      color: theme.secondary.base
     })};
   text-decoration: none;
   padding: 9px 0;
@@ -153,7 +153,7 @@ const OnePageNavLink = styled(Link)`
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
-        borderBottom: `3px solid ${theme.secondary[4]}`,
+        borderBottom: `3px solid ${theme.accents.primary.base}`
       })};
   }
 `
@@ -174,8 +174,8 @@ const NavBarBleed = styled(NavBar)`
   ${({ theme }) =>
     css({
       transition: 'background-color ease-out 0.15s',
-      backgroundColor: theme.primary.base,
-      borderBottom: `2px solid ${theme.primary[1]}`,
+      backgroundColor: theme.core.secondaryStyleGuideBackground,
+      borderBottom: `2px solid ${theme.core.primaryStyleGuideBackground}`
     })};
 
   display: flex;
@@ -226,10 +226,11 @@ const NavBarBleed = styled(NavBar)`
 
 const TitleHeading = styled(H2)`
   text-transform: uppercase;
+  font-weight: normal;
   margin: 0.5rem 0;
   ${({ theme }) =>
     css({
-      color: theme.secondary[4],
+      color: theme.accents.primary.base
     })};
 `
 

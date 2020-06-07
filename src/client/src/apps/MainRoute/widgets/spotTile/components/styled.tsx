@@ -37,7 +37,7 @@ export const TileBaseStyle = styled.div`
 `
 
 export const Icon = styled('i')`
-  color: ${({ theme }) => theme.template.white.normal};
+  color: ${({ theme }) => theme.white};
 `
 
 export const Button = styled('button')`
@@ -49,13 +49,13 @@ export const TileHeader = styled.div`
   align-items: center;
 `
 
-export const TileWrapperBase = styled.div<{ canPopout?: boolean }>`
+export const TileWrapperBase = styled.div<{ shouldMoveDate: boolean }>`
   position: relative;
   &:hover ${TopRightButton} {
     opacity: 0.75;
   }
   &:hover ${DeliveryDate} {
-    margin-right: ${({ canPopout }) => (canPopout ? '1.3rem' : '0')};
+    margin-right: ${({ shouldMoveDate }) => (shouldMoveDate ? '1.3rem' : '0')};
   }
   &:hover ${ActionButton} {
     opacity: 0.75;
@@ -80,7 +80,10 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   flex-direction: column;
   overflow: hidden;
   &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
+    background-color: ${({ theme }) =>
+      theme.name === 'dark' ? theme.core.backgroundHoverColor : theme.core.lightBackground};
+    box-shadow: ${({ theme }) =>
+      theme.name === 'light' ? '0 0 10px 0 rgba(0, 0, 0, 0.1)' : 'none'};
   }
 `
 export const NotionalInputWrapper = styled('div')`

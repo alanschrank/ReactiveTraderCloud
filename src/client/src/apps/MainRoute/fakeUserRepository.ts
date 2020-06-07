@@ -2,107 +2,37 @@ import { User } from 'rt-types'
 
 const LOG_NAME = 'FakeUserRepository: '
 
-const fakeUserDetails = [
+export const fakeUserDetails: User[] = [
   {
-    shortCode: 'LMO',
+    code: 'LMO',
     firstName: 'Lorretta',
     lastName: 'Moe',
+    avatar: `${window.location.origin}/static/media/mockedAvatars/one.png`
   },
   {
-    shortCode: 'WMO',
+    code: 'WMO',
     firstName: 'Wenona',
     lastName: 'Moshier',
+    avatar: `${window.location.origin}/static/media/mockedAvatars/two.png`
   },
   {
-    shortCode: 'NGA',
+    code: 'NGA',
     firstName: 'Nita',
     lastName: 'Garica',
+    avatar: `${window.location.origin}/static/media/mockedAvatars/three.png`
   },
   {
-    shortCode: 'HHA',
+    code: 'HHA',
     firstName: 'Hyun',
     lastName: 'Havlik',
+    avatar: `${window.location.origin}/static/media/mockedAvatars/four.png`
   },
   {
-    shortCode: 'EDO',
+    code: 'EDO',
     firstName: 'Elizebeth',
     lastName: 'Doverspike',
-  },
-  {
-    shortCode: 'MDA',
-    firstName: 'Magali',
-    lastName: 'Dash',
-  },
-  {
-    shortCode: 'DGR',
-    firstName: 'Dorinda',
-    lastName: 'Granillo',
-  },
-  {
-    shortCode: 'JMC',
-    firstName: 'Jade',
-    lastName: 'Mccollister',
-  },
-  {
-    shortCode: 'MPE',
-    firstName: 'Michiko',
-    lastName: 'Perl',
-  },
-  {
-    shortCode: 'CZA',
-    firstName: 'Chanda',
-    lastName: 'Zager',
-  },
-  {
-    shortCode: 'JED',
-    firstName: 'Jarrett',
-    lastName: 'Eddings',
-  },
-  {
-    shortCode: 'HLU',
-    firstName: 'Harley',
-    lastName: 'Luther',
-  },
-  {
-    shortCode: 'DOR',
-    firstName: 'Dong',
-    lastName: 'Ortega',
-  },
-  {
-    shortCode: 'KLA',
-    firstName: 'King',
-    lastName: 'Lamb',
-  },
-  {
-    shortCode: 'AZE',
-    firstName: 'Andres',
-    lastName: 'Zebrowski',
-  },
-  {
-    shortCode: 'RNI',
-    firstName: 'Rufus',
-    lastName: 'Nilges',
-  },
-  {
-    shortCode: 'FAP',
-    firstName: 'Fritz',
-    lastName: 'Aparicio',
-  },
-  {
-    shortCode: 'DNA',
-    firstName: 'Don',
-    lastName: 'Nason',
-  },
-  {
-    shortCode: 'ESP',
-    firstName: 'Eldridge',
-    lastName: 'Spoor',
-  },
-  {
-    shortCode: 'AGE',
-    firstName: 'Ambrose',
-    lastName: 'Gerdts',
-  },
+    avatar: `${window.location.origin}/static/media/mockedAvatars/five.png`
+  }
 ]
 
 const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.length)]
@@ -110,12 +40,13 @@ const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.l
 const currentUser: User = {
   firstName: userDetails.firstName,
   lastName: userDetails.lastName,
-  code: userDetails.shortCode,
+  code: userDetails.code,
+  avatar: userDetails.avatar
 }
 
 console.info(
   LOG_NAME,
-  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`,
+  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`
 )
 
 export default class FakeUserRepository {
@@ -124,5 +55,8 @@ export default class FakeUserRepository {
    */
   static get currentUser() {
     return currentUser
+  }
+  static get userList() {
+    return fakeUserDetails
   }
 }

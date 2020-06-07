@@ -40,7 +40,7 @@ const Analytics: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [windowSize])
   return (
-    <AnalyticsWrapper>
+    <AnalyticsWrapper inExternalWindow={inExternalWindow}>
       <AnalyticsHeader>
         Analytics
         <AnalyticsWindowControls canPopout={canPopout} onPopoutClick={onPopoutClick} />

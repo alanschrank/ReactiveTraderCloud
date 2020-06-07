@@ -3,12 +3,14 @@ const getJSON = require('get-json')
 const fs = require('fs')
 
 const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
-  const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJSONUrl}&fileName=${fileName}&os=${os}`;
+  const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJSONUrl}&os=${os}`
 
   if (os === 'osx') {
-    const appJSON = await getJSON(appJSONUrl.replace('https','http'))
+    const appJSON = await getJSON(appJSONUrl)
     const appName = appJSON.startup_app ? appJSON.startup_app.name : appJSON.shortcut.name
-    const iconFile = appJSON.startup_app ? appJSON.startup_app.name : appJSON.snapshot.windows[0].applicationIcon
+    const iconFile = appJSON.startup_app
+      ? appJSON.startup_app.applicationIcon
+      : appJSON.snapshot.windows[0].applicationIcon
     return `${installerGeneratorUrl}&internal=true&appName=${appName}&iconFile=${iconFile}`
   }
 
@@ -16,9 +18,9 @@ const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
 }
 
 const getFileSuffix = (type, env) => {
-  if (type === 'launcher') return `-launcher-${env}`;
-  if (type === 'platform') return '-platform';
-  return `-${env}`;
+  if (type === 'launcher') return `-launcher-${env}`
+  if (type === 'platform') return '-platform'
+  return `-${env}`
 }
 
 const createInstaller = async (type, env, os = 'win') => {
@@ -45,12 +47,12 @@ const createInstallers = installersData => {
     `
 NOTE: The installers contain just the URL to the manifest, not a copy of the manifest itself.
 Make sure the files are available on their respective locations when distributing the installer.
-`,
+`
   )
 
   installersData.reduce(async (prev, { type, env, os }) => {
-    await prev;
-    return createInstaller(type, env, os);
+    await prev
+    return createInstaller(type, env, os)
   }, Promise.resolve())
 }
 
@@ -65,14 +67,13 @@ const INSTALLERS_TO_CREATE = [
   { type: 'platform', env: 'openfin', os: 'win' },
 
   // os-x
-  { type: 'app', env: 'uat', os: 'osx' },
   { type: 'app', env: 'dev', os: 'osx' },
+  { type: 'app', env: 'uat', os: 'osx' },
   { type: 'app', env: 'demo', os: 'osx' },
-  { type: 'launcher', env: 'demo', os: 'osx' },
   { type: 'launcher', env: 'dev', os: 'osx' },
   { type: 'launcher', env: 'uat', os: 'osx' },
+  { type: 'launcher', env: 'demo', os: 'osx' },
   { type: 'platform', env: 'openfin', os: 'osx' },
 ]
 
 createInstallers(INSTALLERS_TO_CREATE)
-

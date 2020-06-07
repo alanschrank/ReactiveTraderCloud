@@ -1,19 +1,18 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { TileView } from './types'
-import AnalyticsViewIcon from './AnalyticsTileViewIcon'
-import SpotTileViewIcon from './SpotTileViewIcon'
+import ToggleView from './ToggleView'
+import WorkspaceControl from './WorkspaceControl'
+
 interface Props {
   currencyOptions: string[]
   tileView: TileView
   currency: string
   defaultOption: string
-}
-
-const tileViews = {
-  [TileView.Analytics]: AnalyticsViewIcon,
-  [TileView.Normal]: SpotTileViewIcon,
+  canPopout: boolean
+  onPopoutClick?: (x: number, y: number) => void
+  onCurrencyChange: (currency: string) => void
+  onTileViewChange: (tileView: TileView) => void
 }
 
 const WorkspaceHeader: React.FC<Props> = ({
@@ -21,8 +20,13 @@ const WorkspaceHeader: React.FC<Props> = ({
   tileView,
   currency,
   currencyOptions,
+  canPopout,
+  onPopoutClick,
+  onCurrencyChange,
+  onTileViewChange,
 }) => {
   const options = [defaultOption, ...currencyOptions]
+
   return (
     <Header>
       <LeftNav>
@@ -33,27 +37,17 @@ const WorkspaceHeader: React.FC<Props> = ({
             active={currencyOption === currency}
             data-qa="workspace-header__nav-item"
             data-qa-id={`currency-option-${currencyOption.toLowerCase()}`}
+            onClick={() => onCurrencyChange(currencyOption)}
           >
-            <NavLink to={`/${currencyOption}/${tileView}`}>{currencyOption}</NavLink>
+            {currencyOption}
           </NavItem>
         ))}
       </LeftNav>
       <RightNav>
-        {Object.keys(tileViews).map(view => {
-          const Icon = tileViews[view]
-          return (
-            <NavItem
-              key={view}
-              active={view === tileView}
-              data-qa="workspace-header__nav-item--view"
-              data-qa-id={`workspace-view-${view.toLowerCase()}`}
-            >
-              <NavLink to={`/${currency}/${view}`}>
-                <Icon />
-              </NavLink>
-            </NavItem>
-          )
-        })}
+        <ToggleView tileView={tileView} onTileViewChange={onTileViewChange} />
+        {canPopout && (
+          <WorkspaceControl onPopoutClick={onPopoutClick} data-qa="tiles-header__pop-out-button" />
+        )}
       </RightNav>
     </Header>
   )

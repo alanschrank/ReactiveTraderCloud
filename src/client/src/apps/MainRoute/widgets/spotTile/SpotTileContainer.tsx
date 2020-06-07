@@ -12,12 +12,13 @@ import {
   selectCurrencyPair,
   selectExecutionStatus,
   selectPricingStatus,
-  selectSpotTileData,
+  selectSpotTileData
 } from './selectors'
 import { TileView } from '../workspace/workspaceHeader'
 import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote } from './model/rfqRequest'
 import { TradingMode } from './components/types'
 import { CurrencyPairNotional } from './model/spotTileData'
+import { getNotionalFromStorage, clearNotionalsOnStorage } from 'rt-util'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -44,12 +45,12 @@ const mapDispatchToProps = memoize(
       reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
       requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
       expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
-      reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
+      reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj))
     },
     updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
-      dispatch(SpotTileActions.setNotional(currencyPairNotional)),
+      dispatch(SpotTileActions.setNotional(currencyPairNotional))
   }),
-  (_, { id }) => id,
+  (_, { id }) => id
 )
 
 const makeMapStateToProps = memoize(
@@ -59,9 +60,9 @@ const makeMapStateToProps = memoize(
 
     // here 'ownProps.id' is an ID of the tile, but it's ID of the currency pair too (same thing for now)
     currencyPair: selectCurrencyPair(state, ownProps.id),
-    spotTileData: selectSpotTileData(state, ownProps.id),
+    spotTileData: selectSpotTileData(state, ownProps.id)
   }),
-  (_, { id }) => id,
+  (_, { id }) => id
 )
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
@@ -82,6 +83,15 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
+
+  useEffect(() => {
+    const notional = getNotionalFromStorage(id)
+    if (typeof notional !== 'undefined' && notional !== props.spotTileData.notional) {
+      props.updateNotional({ currencyPair: id, notional })
+    }
+    clearNotionalsOnStorage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // watch currency pair changes when component is mounted
   useEffect(() => {
@@ -106,7 +116,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
 
 const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(SpotTileContainer)
 
 export default ConnectedSpotTileContainer

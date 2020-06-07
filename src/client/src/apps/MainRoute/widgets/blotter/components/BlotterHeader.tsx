@@ -1,7 +1,6 @@
+import React, { useCallback, useState, FC, MouseEvent } from 'react'
 import { GridApi } from 'ag-grid-community'
-import React, { useCallback, useState, FC } from 'react'
-import { flexStyle } from 'rt-components'
-import { PopoutIcon } from 'rt-components'
+import { flexStyle, PopoutIcon } from 'rt-components'
 import { styled } from 'rt-theme'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
@@ -46,10 +45,10 @@ const Fill = styled.div`
 
 const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, onPopoutClick }) => {
   const popoutClickHandler = useCallback(
-    event => {
+    (event: MouseEvent) => {
       onPopoutClick(event.screenX, event.screenY)
     },
-    [onPopoutClick],
+    [onPopoutClick]
   )
 
   const [quickFilterText, setQuickFilterText] = useState('')
@@ -59,7 +58,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
       setQuickFilterText(event.currentTarget.value)
       return gridApi && gridApi.setQuickFilter(event.currentTarget.value)
     },
-    [setQuickFilterText, gridApi],
+    [setQuickFilterText, gridApi]
   )
 
   const removeQuickFilter = useCallback(() => {
@@ -74,12 +73,12 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
   const removeAllFilters = useCallback(() => gridApi && gridApi.setFilterModel(null), [gridApi])
 
   const removeFilter = useCallback((key: string) => gridApi && gridApi.destroyFilter(key), [
-    gridApi,
+    gridApi
   ])
 
   return (
     <BlotterHeaderStyle>
-      <BlotterLeft>Executed Trades</BlotterLeft>
+      <BlotterLeft>Trades</BlotterLeft>
       <BlotterRight>
         <ExcelButton onClick={onExportToExcelClick} />
         <BlotterToolbar

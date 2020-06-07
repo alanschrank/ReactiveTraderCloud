@@ -2,15 +2,7 @@ import { darken } from 'polished'
 import { mapValues } from 'lodash'
 import { keyframes } from 'styled-components'
 
-import {
-  colors,
-  template,
-  AccentPaletteMap,
-  Color,
-  CorePalette,
-  CorePaletteMap,
-  AccentName,
-} from './colors'
+import { colors, AccentPaletteMap, Color, CorePalette, CorePaletteMap, AccentName } from './colors'
 
 interface BaseTheme {
   white: Color
@@ -78,10 +70,9 @@ export const getThemeColor = (theme: Theme, color: Color | ThemeSelector, fallba
 const createTheme = (
   name: string,
   { primary, secondary, core }: CorePaletteMap,
-  accents: AccentPaletteMap,
+  accents: AccentPaletteMap
 ) => ({
   name,
-  template,
   core,
   white: colors.static.white,
   black: colors.static.black,
@@ -101,27 +92,27 @@ const createTheme = (
 
     fast: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
+      easing: 'cubic-bezier(0.19, 1, 0.22, 1)'
     },
 
     normal: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
     },
 
     slow: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
-    },
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
+    }
   },
 
   overlay: {
     backgroundColor: darken(0.1, primary[1]),
-    textColor: secondary[2],
+    textColor: secondary[2]
   },
 
   tile: {
-    inputColor: secondary[4],
+    inputColor: secondary[4]
   },
 
   flash: keyframes`
@@ -129,7 +120,7 @@ const createTheme = (
       background-color: ${primary.base};
     }
     50% {
-      background-color: ${accents.dominant.darker};
+      background-color: ${accents.primary.darker};
     }
     100% {
       background-color: ${primary.base};
@@ -142,48 +133,52 @@ const createTheme = (
       textColor: secondary.base,
 
       active: {
-        backgroundColor: primary[4],
+        backgroundColor: primary[4]
       },
       disabled: {
-        backgroundColor: primary[3],
-      },
+        backgroundColor: primary[3]
+      }
     },
 
     primary: {
-      backgroundColor: accents.dominant.base,
-      textColor: colors.light.primary.base,
+      backgroundColor: accents.primary.base,
+      textColor: colors.static.white,
 
       active: {
-        backgroundColor: accents.dominant.darker,
+        backgroundColor: accents.primary.darker,
+        textColor: colors.static.white
       },
       disabled: {
-        backgroundColor: accents.dominant.lighter,
-      },
+        backgroundColor: primary[1],
+        textColor: secondary.base
+      }
     },
 
     secondary: {
-      backgroundColor: secondary.base,
-      textColor: primary.base,
+      backgroundColor: primary[1],
+      textColor: secondary.base,
 
       active: {
-        backgroundColor: secondary[3],
+        backgroundColor: accents.primary.darker,
+        textColor: colors.static.white
       },
       disabled: {
-        backgroundColor: secondary[4],
-      },
+        backgroundColor: primary[1]
+      }
     },
 
-    ...mapValues(accents, ({ base, darker, lighter }) => ({
+    ...mapValues(accents, ({ base, darker }) => ({
       backgroundColor: base,
-      textColor: colors.light.primary.base,
+      textColor: colors.static.white,
 
       active: {
-        backgroundColor: darker,
+        backgroundColor: darker
       },
       disabled: {
-        backgroundColor: lighter,
-      },
-    })),
+        backgroundColor: primary[1],
+        textColor: secondary.base
+      }
+    }))
   } as TouchableStyleSet,
 
   dropdown: {
@@ -191,22 +186,20 @@ const createTheme = (
     textColor: secondary.base,
 
     active: {
-      backgroundColor: primary[2],
+      backgroundColor: primary[2]
     },
 
     disabled: {
       backgroundColor: primary[1],
-      textColor: primary[2],
-    },
-  },
+      textColor: primary[2]
+    }
+  }
 })
 
 const lightTheme = createTheme('light', colors.light, colors.accents)
 const darkTheme = createTheme('dark', colors.dark, colors.accents)
-// Manual overrides
-darkTheme.button.secondary.textColor = darkTheme.primary.base
 
 export const themes = {
   light: lightTheme,
-  dark: darkTheme,
+  dark: darkTheme
 }

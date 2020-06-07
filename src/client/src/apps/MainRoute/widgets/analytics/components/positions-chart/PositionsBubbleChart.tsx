@@ -18,7 +18,7 @@ import {
   addShadow,
   Scales,
   CCYPosition,
-  BubbleChartNode,
+  BubbleChartNode
 } from './chartUtil'
 
 export interface PositionsBubbleChartProps {
@@ -48,7 +48,7 @@ export class PositionsBubbleChart extends Component<
   state: PositionsBubbleChartState = {
     nodes: [],
     prevPositionsData: [],
-    updateRequired: false,
+    updateRequired: false
   }
 
   constructor(props: PositionsBubbleChartProps) {
@@ -93,7 +93,7 @@ export class PositionsBubbleChart extends Component<
       positionsData,
       (acc, value, key: number) =>
         isEqual(value, existingPositionsData[key]) ? acc : acc.concat(key),
-      [] as ReadonlyArray<number>,
+      [] as ReadonlyArray<number>
     )
 
     function filterStale(existingPos: CCYPosition) {
@@ -122,7 +122,7 @@ export class PositionsBubbleChart extends Component<
     const positionsData: CCYPosition[] = getPositionsDataFromSeries(data, this.props.currencyPairs)
     nodes = map(positionsData, (dataObj: CCYPosition, index: number) => {
       const color =
-        dataObj.baseTradedAmount > 0 ? colors.accents.good.base : colors.accents.bad.base
+        dataObj.baseTradedAmount > 0 ? colors.accents.positive.base : colors.accents.negative.base
       // update an existing node:
       const existingNode = find(nodes, (node: BubbleChartNode) => node.id === dataObj.symbol)
       if (existingNode) {
@@ -135,7 +135,7 @@ export class PositionsBubbleChart extends Component<
           color,
           id: dataObj.symbol,
           r: getRadius(dataObj, this.scales),
-          cx: this.scales.x(index),
+          cx: this.scales.x(index)
         }
         return newNode
       }
@@ -148,7 +148,7 @@ export class PositionsBubbleChart extends Component<
     this.setState({
       nodes: updatedNodes,
       prevPositionsData: positionsData,
-      updateRequired: true,
+      updateRequired: true
     })
   }
 
@@ -194,7 +194,7 @@ export class PositionsBubbleChart extends Component<
           this.positionTooltip(dataObj, d3Event as MouseEvent)
         })
         .on('mousemove', (dataObj: BubbleChartNode) =>
-          this.positionTooltip(dataObj, d3Event as MouseEvent),
+          this.positionTooltip(dataObj, d3Event as MouseEvent)
         )
         .on('mouseout', () => this.tooltip.style('visibility', 'hidden'))
       updateNodes(nodeGroup, this.state.nodes)

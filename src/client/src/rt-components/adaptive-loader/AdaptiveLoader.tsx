@@ -23,7 +23,7 @@ const getBounce = memoize(
   100% {
     transform: translate(0px,0px);
   }
-`,
+`
 )
 
 interface BarProps {
@@ -31,14 +31,14 @@ interface BarProps {
   moveDistance: number
   speed: number
   type: LoaderType
-  active?: boolean
+  color?: string
 }
 
 const Bar = styled('rect')<BarProps>`
   animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s
     infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER) - speed * 0.6}s;
-  fill: ${({ theme, active }) => (active ? '#8c7ae6' : theme.core.textColor)};
+  fill: ${({ theme, color }) => color ?? theme.core.textColor};
   will-change: transform;
 `
 
@@ -48,11 +48,11 @@ interface Props {
   type?: LoaderType
   seperation?: number
   speed?: number
-  active?: boolean
+  color?: string
 }
 
 const AdaptiveLoader: React.FC<Props> = React.memo(
-  ({ size, type, seperation, speed, children, active }) => {
+  ({ size, type, seperation, speed, children, color }) => {
     const sizeNum = Number(size)
     const barHeight = sizeNum * 0.75
     const barWidth = barHeight / 4
@@ -65,7 +65,6 @@ const AdaptiveLoader: React.FC<Props> = React.memo(
       <svg width={sizeNum} height={sizeNum} data-qa="adaptive-loader__svg">
         {bars.map((item, i) => (
           <Bar
-            active={active}
             type={type || 'primary'}
             key={i}
             height={barHeight}
@@ -74,12 +73,13 @@ const AdaptiveLoader: React.FC<Props> = React.memo(
             order={i}
             moveDistance={moveDistance}
             speed={speed || ANIMATION_SPEED}
+            color={color}
           />
         ))}
         {children}
       </svg>
     )
-  },
+  }
 )
 
 export default AdaptiveLoader

@@ -1,15 +1,15 @@
 import React, { FC } from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom'
-import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
+import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
+import { currencyFormatter } from 'rt-util'
+import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 
 export const Router: FC = () => (
   <Switch>
-    <Redirect exact from="/" to="/ALL/Analytics" />
     <Route
       path="/analytics"
       render={() => (
-        <RouteWrapper windowType="sub">
+        <RouteWrapper windowType="sub" title="analytics">
           <AnalyticsRoute />
         </RouteWrapper>
       )}
@@ -17,7 +17,7 @@ export const Router: FC = () => (
     <Route
       path="/blotter"
       render={routeProps => (
-        <RouteWrapper windowType="sub">
+        <RouteWrapper windowType="sub" title="trades">
           <BlotterRoute {...routeProps} />
         </RouteWrapper>
       )}
@@ -25,7 +25,7 @@ export const Router: FC = () => (
     <Route
       path="/tiles"
       render={() => (
-        <RouteWrapper>
+        <RouteWrapper windowType="sub" title="live rates">
           <TileRoute />
         </RouteWrapper>
       )}
@@ -33,14 +33,14 @@ export const Router: FC = () => (
     <Route
       path="/spot/:symbol"
       render={routeProps => (
-        <RouteWrapper windowType="sub">
+        <RouteWrapper windowType="sub" title={currencyFormatter(routeProps.match.params.symbol)}>
           <SpotRoute {...routeProps} />
         </RouteWrapper>
       )}
     />
     <Route
       exact
-      path="/:currency/:tileView"
+      path="/"
       render={() => (
         <RouteWrapper>
           <ShellRoute />

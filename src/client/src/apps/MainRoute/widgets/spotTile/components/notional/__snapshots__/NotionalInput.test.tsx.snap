@@ -28,10 +28,8 @@ exports[`NotionalInput default 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c2 {
-  box-shadow: 0px 1px 0px #fff;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c2:focus,
@@ -89,10 +87,8 @@ exports[`NotionalInput default 2`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c2 {
-  box-shadow: 0px 1px 0px #333333;
+  caret-color: #fff;
+  box-shadow: 0px 1px 0px rgba(40,46,57,0.41);
 }
 
 .spot-tile:hover .c2:focus,
@@ -150,11 +146,9 @@ exports[`NotionalInput disabled 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #282e39;
   opacity: 0.3;
-}
-
-.spot-tile:hover .c2 {
-  box-shadow: 0px 1px 0px #fff;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c2:focus,
@@ -212,11 +206,9 @@ exports[`NotionalInput disabled 2`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #fff;
   opacity: 0.3;
-}
-
-.spot-tile:hover .c2 {
-  box-shadow: 0px 1px 0px #333333;
+  box-shadow: 0px 1px 0px rgba(40,46,57,0.41);
 }
 
 .spot-tile:hover .c2:focus,
@@ -274,10 +266,8 @@ exports[`NotionalInput show reset button 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c2 {
-  box-shadow: 0px 1px 0px #fff;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c2:focus,
@@ -286,8 +276,8 @@ exports[`NotionalInput show reset button 1`] = `
 }
 
 .c3 {
-  background-color: #2e3543;
-  border: 2px solid #272d3a;
+  background-color: #2f3542;
+  border: 2px solid #282e39;
   border-radius: 3px;
   margin-left: 8px;
   grid-area: ResetInputValue;
@@ -354,10 +344,8 @@ exports[`NotionalInput show reset button 2`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c2 {
-  box-shadow: 0px 1px 0px #333333;
+  caret-color: #fff;
+  box-shadow: 0px 1px 0px rgba(40,46,57,0.41);
 }
 
 .spot-tile:hover .c2:focus,
@@ -367,7 +355,7 @@ exports[`NotionalInput show reset button 2`] = `
 
 .c3 {
   background-color: #fff;
-  border: 2px solid #f4f6f9;
+  border: 2px solid #f9f9f9;
   border-radius: 3px;
   margin-left: 8px;
   grid-area: ResetInputValue;
@@ -415,7 +403,7 @@ exports[`NotionalInput with error 1`] = `
 }
 
 .c3 {
-  color: #f94c4c;
+  color: #ff274b;
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
@@ -443,7 +431,8 @@ exports[`NotionalInput with error 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-  box-shadow: 0px 1px 0px #f94c4c;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px #ff274b;
 }
 
 <div
@@ -483,7 +472,7 @@ exports[`NotionalInput with error 2`] = `
 }
 
 .c3 {
-  color: #f94c4c;
+  color: #ff274b;
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
@@ -511,7 +500,8 @@ exports[`NotionalInput with error 2`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-  box-shadow: 0px 1px 0px #f94c4c;
+  caret-color: #fff;
+  box-shadow: 0px 1px 0px #ff274b;
 }
 
 <div
@@ -579,6 +569,7 @@ exports[`NotionalInput with info 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #282e39;
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
@@ -647,6 +638,7 @@ exports[`NotionalInput with info 2`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #fff;
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
@@ -687,7 +679,7 @@ exports[`NotionalInput with warning 1`] = `
 }
 
 .c3 {
-  color: #F7D036;
+  color: #ff8d00;
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
@@ -715,7 +707,8 @@ exports[`NotionalInput with warning 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-  box-shadow: 0px 1px 0px #F7D036;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px #ff8d00;
 }
 
 <div
@@ -755,7 +748,7 @@ exports[`NotionalInput with warning 2`] = `
 }
 
 .c3 {
-  color: #F7D036;
+  color: #ff8d00;
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
@@ -783,7 +776,8 @@ exports[`NotionalInput with warning 2`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-  box-shadow: 0px 1px 0px #F7D036;
+  caret-color: #fff;
+  box-shadow: 0px 1px 0px #ff8d00;
 }
 
 <div

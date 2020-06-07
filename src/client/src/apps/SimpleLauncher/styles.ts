@@ -1,6 +1,6 @@
+import { createGlobalStyle, css } from 'styled-components'
 import { styled } from 'rt-theme'
 import { rules } from 'rt-styleguide'
-import { createGlobalStyle } from 'styled-components'
 
 export const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -14,8 +14,8 @@ export const LauncherGlobalStyle = createGlobalStyle`
 export const RootContainer = styled.div`
   height: 100%;
   width: 100%;
-  background-color: #313131;
   overflow: hidden;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   color: ${({ theme }) => theme.core.textColor};
 `
 
@@ -26,14 +26,14 @@ export const RootLauncherContainer = styled(RootContainer)`
 `
 
 export const RootResultsContainer = styled.div`
-  padding: 5px;
+  padding: 0;
 `
 
 export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
   max-height: 56px;
   height: 100%;
   width: 100%;
-  background-color: #313131;
+  background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   align-items: center;
   border-radius: ${({ showResponsePanel }) => showResponsePanel && '3px 3px 0 0'};
@@ -59,14 +59,6 @@ export const LogoLauncherContainer = styled(IconContainer)`
   border-right: 1px solid rgba(216, 216, 216, 0.15);
   height: 70%;
 
-  .svg-icon {
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-
-  .svg-icon--active {
-    fill: #8c7ae6;
-    transition: fill 0.2s ease-in-out;
-  }
   ${rules.appRegionDrag};
 `
 
@@ -93,7 +85,7 @@ export const SearchButtonContainer = styled(ButtonContainer)<{ isSearchVisible: 
   height: auto;
   width: 40px;
   border-radius: 0 3px 3px 0;
-  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#8c7ae6' : '')};
+  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#5f94f5' : '')};
   ${rules.appRegionNoDrag};
 `
 
@@ -106,23 +98,22 @@ export const LogoContainer = styled(IconContainer)`
   ${rules.appRegionDrag};
 `
 
-export const ExitButton = styled.button`
-  border-bottom: 1px solid rgba(216, 216, 216, 0.15);
-  padding-top: 3px;
+const controlButtonHoverStyle = css`
   &:hover {
     svg path:last-child {
       fill: #5f94f5;
     }
   }
 `
+export const ExitButton = styled.button`
+  border-bottom: 1px solid rgba(216, 216, 216, 0.15);
+  padding-top: 3px;
+  ${controlButtonHoverStyle}
+`
 
 export const MinimiseButton = styled.button`
   padding-bottom: 3px;
-  &:hover {
-    svg path:last-child {
-      fill: #5f94f5;
-    }
-  }
+  ${controlButtonHoverStyle}
 `
 
 export const MinExitContainer = styled(ButtonContainer)`

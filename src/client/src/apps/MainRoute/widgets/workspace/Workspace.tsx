@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TearOff } from 'rt-components'
-import { useParams } from 'react-router'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
@@ -27,33 +26,41 @@ interface SpotTile {
 interface Props {
   spotTiles: SpotTile[]
   currencyOptions: string[]
+  canPopout: boolean
+  onPopoutClick?: () => void
 }
 
 const ALL = 'ALL'
 
-const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
-  const { currency, tileView } = useParams()
-
-  if (!currency || !tileView) {
-    return null
-  }
+const Workspace: React.FC<Props> = ({
+  spotTiles = [],
+  currencyOptions,
+  canPopout,
+  onPopoutClick,
+}) => {
+  const [currency, setCurrencyOption] = useState(ALL)
+  const [tileView, setTileView] = useState(TileView.Analytics)
 
   return (
     <div data-qa="workspace__tiles-workspace">
       <WorkspaceHeader
+        canPopout={canPopout}
         currencyOptions={currencyOptions}
         currency={currency}
         defaultOption={ALL}
+        onPopoutClick={onPopoutClick}
+        onCurrencyChange={setCurrencyOption}
+        onTileViewChange={setTileView}
         tileView={tileView as TileView}
       />
       <WorkspaceItems data-qa="workspace__tiles-workspace-items">
         {spotTiles
-          .filter(({ key }) => key.includes(currency) || currency === 'ALL')
+          .filter(({ key }) => key.includes(currency) || currency === ALL)
           .map(({ key, externalWindowProps, tornOff }) => (
             <TearOff
               id={key}
               key={key}
-              dragTearOff={true}
+              dragTearOff
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView as TileView)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>

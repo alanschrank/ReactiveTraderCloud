@@ -1,11 +1,6 @@
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
-import { getEnvironment } from 'rt-util'
-import {
-  excelIcon,
-  limitCheckerIcon,
-  reactiveAnalyticsIcon,
-  reactiveTraderIcon,
-} from './icons/index'
+import { getEnvironment, getAppName } from 'rt-util'
+import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon, reactiveTraderIcon } from './icons'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -21,7 +16,7 @@ const defaultWindowOptions: OpenFinWindowOptions = {
   defaultCentered: true,
   frame: false,
   shadow: true,
-  icon: `${ORIGIN}/static/media/icon.ico`,
+  icon: `${ORIGIN}/static/media/adaptive.ico`,
   accelerator:
     process.env.NODE_ENV !== 'development'
       ? {}
@@ -58,7 +53,9 @@ export interface ApplicationConfig {
   uuid?: string
   url?: string
   icon: JSX.Element
-  iconhovercolor?: string
+  iconFillColor: string
+  iconHoverFillColor?: string
+  iconHoverBackgroundColor?: string
   provider?: ApplicationProvider
 }
 
@@ -67,6 +64,7 @@ const excelJSAppConfig: ApplicationConfig = {
   displayName: 'EX',
   tooltipName: 'Launch Excel',
   icon: excelIcon,
+  iconFillColor: '#CFCFCF',
   provider: {
     platformName: 'openfin',
     applicationType: 'excel',
@@ -82,6 +80,7 @@ const excelLegacyAppConfig: ApplicationConfig = {
   displayName: 'EX',
   tooltipName: 'Launch Excel',
   icon: excelIcon,
+  iconFillColor: '#CFCFCF',
   url: `${ORIGIN}/static/excel/instructions.html`,
   provider: {
     platformName: 'openfin',
@@ -101,27 +100,26 @@ const excelLegacyAppConfig: ApplicationConfig = {
 
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
-const prodEnvs = ['demo']
-const env = getEnvironment() || 'unknown'
-const envFormatted = prodEnvs.includes(env) ? '' : `(${env.toUpperCase()})`
-
-console.log(envFormatted)
+const env = getEnvironment()
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: `Reactive Trader Cloud ${envFormatted}`,
+    name: getAppName(),
     displayName: 'RT',
     tooltipName: 'Launch Reactive Trader',
-    uuid: `reactive-trader-cloud-web-${env}`,
+    uuid: `reactive-trader-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
+    iconFillColor: '#CFCFCF',
+    iconHoverFillColor: '#ffffff',
+    iconHoverBackgroundColor: '#28588d',
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
         preloadScripts: excelPreloadScripts,
-        icon: `${ORIGIN}/static/media/rt-icon.ico`,
+        icon: `${ORIGIN}/static/media/reactive-trader.ico`,
       },
     },
   },
@@ -131,14 +129,16 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Analytics',
     url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
-    iconhovercolor: '#AAABD1',
+    iconFillColor: '#CFCFCF',
+    iconHoverFillColor: '#ffffff',
+    iconHoverBackgroundColor: '#AAABD1',
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
         frame: false,
-        icon: `${ORIGIN}/static/media/ra-icon-color.ico`,
+        icon: `${ORIGIN}/static/media/reactive-analytics.ico`,
       },
     },
   },
@@ -147,6 +147,8 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: 'LC',
     tooltipName: 'Launch Limit Checker',
     icon: limitCheckerIcon,
+    iconFillColor: '#CFCFCF',
+    iconHoverFillColor: '#ffffff',
     provider: {
       platformName: 'openfin',
       applicationType: 'download',

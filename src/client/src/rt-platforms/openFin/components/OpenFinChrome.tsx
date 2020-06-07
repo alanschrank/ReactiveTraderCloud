@@ -5,19 +5,20 @@ import { styled, AccentName } from 'rt-theme'
 import {
   minimiseNormalIcon,
   maximiseScreenIcon,
-  exitNormalIcon,
+  ExitIcon,
   popInIcon,
 } from 'apps/SimpleLauncher/icons'
 import { isCurrentWindowDocked } from '../adapter'
 import { UndockIcon } from '../../../rt-components'
-
-const exitIcon = exitNormalIcon()
+import { getAppName } from 'rt-util'
 
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
   popIn?: () => void
   close?: () => void
+  title?: string
+  isBlotterOrTrade?: boolean
 }
 
 export const OpenFinChrome: React.FC = ({ children }) => (
@@ -38,15 +39,16 @@ export const OpenFinChrome: React.FC = ({ children }) => (
 )
 
 export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
-  <Header>
+  <Header hasBottomBorder={props.isBlotterOrTrade}>
     <OpenFinUndockControl />
-    <DragRegion />
+    <DragRegion>{props.title}</DragRegion>
     <OpenFinControls {...props} />
   </Header>
 )
 
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
   <React.Fragment>
+    {maximize ? <TitleContainer>{getAppName()}</TitleContainer> : null}
     {minimize ? (
       <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
         {minimiseNormalIcon}
@@ -64,7 +66,7 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
     ) : null}
     {close ? (
       <HeaderControl onClick={close} data-qa="openfin-chrome__close">
-        {exitIcon}
+        <ExitIcon />
       </HeaderControl>
     ) : null}
   </React.Fragment>
@@ -78,10 +80,16 @@ const OpenFinUndockControl: React.FC = () => {
       setIsWindowDocked(true)
     }
 
+    const handleWindowUnDocked = () => {
+      setIsWindowDocked(false)
+    }
+
     snapAndDock.addEventListener('window-docked', handleWindowDocked)
+    snapAndDock.addEventListener('window-undocked', handleWindowUnDocked)
 
     return () => {
       snapAndDock.removeEventListener('window-docked', handleWindowDocked)
+      snapAndDock.removeEventListener('window-undocked', handleWindowUnDocked)
     }
   }, [])
 
@@ -97,74 +105,79 @@ const OpenFinUndockControl: React.FC = () => {
   }, [])
 
   return (
-    <>
-      {isWindowDocked && (
-        <UndockButton onClick={handleUndockClick}>
-          <UndockIcon width={24} height={24} />
-        </UndockButton>
-      )}
-    </>
+    <UndockControl
+      disabled={!isWindowDocked}
+      onClick={handleUndockClick}
+      isWindowDocked={isWindowDocked}
+    >
+      <UndockIcon width={24} height={24} />
+    </UndockControl>
   )
 }
 
-export const OPENFIN_CHROME_HEADER_HEIGHT = '21px'
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 20px;
+  margin-top: 20px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 80%;
+  font-size: 0.625rem;
+  font-weight: normal;
+  z-index: 100;
+  text-transform: uppercase;
+`
 
-const Header = styled.div`
+const Header = styled.div<{ hasBottomBorder?: boolean }>`
   display: flex;
   width: 100%;
   min-height: 1.5rem;
   font-size: 1rem;
-  height: ${OPENFIN_CHROME_HEADER_HEIGHT};
+  padding: 0 0.625rem;
+  border-bottom: ${({ hasBottomBorder, theme }) =>
+    hasBottomBorder ? `1px solid ${theme.primary[1]}` : 0};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const DragRegion = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
+  font-size: 0.625rem;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+
   -webkit-app-region: drag;
 `
 
-const HeaderControl = styled.div<{ accent?: AccentName }>`
+const HeaderControl = styled.button<{ accent?: AccentName }>`
   display: flex;
-  justify-content: center;
-  align-self: center;
-  color: ${props => props.theme.button.secondary.backgroundColor};
   cursor: pointer;
 
   &:hover {
-    svg path:last-child {
-      fill: #5f94f5;
-    }
-  }
-`
-
-const UndockButton = styled.button`
-  display: block;
-  height: 100%;
-  width: max-content;
-  padding-left: 0.625rem;
-  cursor: pointer;
-
-  &:hover {
-    .icon {
-      path:nth-child(2) {
-        fill: #5f94f5;
-      }
+    svg {
       path:last-child {
-        fill: #535760;
+        fill: #5f94f5;
       }
     }
   }
 
   &:disabled {
-    .icon {
+    svg {
       path:nth-child(2) {
         fill: #535760;
       }
       path:last-child {
-        fill: #3d424c;
+        fill: #535760;
       }
     }
   }
+`
+const UndockControl = styled(HeaderControl)<{ isWindowDocked: boolean }>`
+  visibility: ${({ isWindowDocked }) => (isWindowDocked ? 'visible' : 'hidden')};
 `
 
 export const Root = styled.div`

@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import ReactGA from 'react-ga'
 import { WindowConfig } from '../../types'
 import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
@@ -18,10 +19,10 @@ type WindowState = WindowStateArr[keyof WindowStateArr]
 export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Normal: 'normal',
   Minimized: 'minimized',
-  Maximized: 'maximized',
+  Maximized: 'maximized'
 }
 
-const generateRandomName = function() {
+function generateRandomName() {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -40,7 +41,7 @@ const getChildWindows = () => {
       },
       (error: string) => {
         reject(error)
-      },
+      }
     )
   })
 }
@@ -67,7 +68,7 @@ export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>
         }
       })
     },
-    restore: async () => (await getWindow()).restore(),
+    restore: async () => (await getWindow()).restore()
   }
 }
 
@@ -75,12 +76,12 @@ type OpenfinWindowPosition = Pick<fin.WindowOption, 'defaultLeft' | 'defaultTop'
 
 async function getOpenfinWindowPosition(
   config: DesktopWindowProps,
-  childWindows?: fin.OpenFinWindow[],
+  childWindows?: fin.OpenFinWindow[]
 ): Promise<OpenfinWindowPosition> {
   if (typeof config.x !== 'undefined' || typeof config.y !== 'undefined') {
     return {
       defaultLeft: config.x,
-      defaultTop: config.y,
+      defaultTop: config.y
     }
   }
 
@@ -88,20 +89,21 @@ async function getOpenfinWindowPosition(
     const lastWindow = _last(childWindows)
     return {
       defaultLeft: _get(lastWindow, 'nativeWindow.screenLeft') + TEAR_OUT_OFFSET_LEFT,
-      defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP,
+      defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP
     }
   }
 
   return {
     defaultLeft: undefined,
-    defaultTop: undefined,
+    defaultTop: undefined
   }
 }
 
 export const openDesktopWindow = async (
   config: DesktopWindowProps,
   onClose?: () => void,
-  position?: {},
+  onUpdatePosition?: (event: any) => void,
+  position?: {}
 ): Promise<PlatformWindow> => {
   const { url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth } = config
   const childWindows = await getChildWindows()
@@ -112,6 +114,12 @@ export const openDesktopWindow = async (
   const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
   console.info(`Creating Openfin window: ${windowName}`)
+
+  ReactGA.event({
+    category: 'RT - Window',
+    action: 'open',
+    label: windowName
+  })
 
   //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
   // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
@@ -132,23 +140,39 @@ export const openDesktopWindow = async (
         saveWindowState: false,
         shadow: true,
         ...position,
-        ...updatedPosition,
+        ...updatedPosition
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
         console.info(`Openfin window created: ${windowName}`)
+
+        const updatePositionListener = (event: any) => {
+          console.log(`Received 'bounds-changing' event for Openfin window: ${windowName}`)
+          onUpdatePosition && onUpdatePosition(event)
+        }
+
         if (onClose) {
           const closeListener = () => {
             console.log(`Received 'close' event for Openfin window: ${windowName}`)
             win.removeEventListener('closed', closeListener)
+
+            if (onUpdatePosition) {
+              win.removeEventListener('bounds-changing', updatePositionListener)
+            }
             onClose && onClose()
           }
+
           win.addEventListener('closed', closeListener)
         }
+
+        if (onUpdatePosition) {
+          win.addEventListener('bounds-changing', updatePositionListener)
+        }
+
         resolve(win)
       },
       error => {
         console.error(`Error creating Openfin window: ${windowName}`, error)
-      },
+      }
     )
   })
 
@@ -191,4 +215,3 @@ export async function isCurrentWindowDocked() {
     return hasIdentity
   }, false)
 }
-

@@ -7,6 +7,10 @@ export interface WindowPosition {
   y?: number
 }
 
+export interface TilesLayout {
+  [key: string]: WindowPosition
+}
+
 export interface WindowConfig {
   name: string
   url: string
@@ -19,6 +23,7 @@ export interface WindowConfig {
   center?: 'parent' | 'screen'
   x?: number
   y?: number
+  saveWindowState?: boolean
 }
 
 export interface AppConfig {
